@@ -15,8 +15,13 @@ class Sniff:
         scapy.sniff(iface=interface, store=False, prn=self.process_sniffed_packet)
 
     def get_url(self, packet):
-        self.url = packet[http.HTTPRequest].Host + packet[http.HTTPRequest].Path
-        return self.url
+        try:
+            self.url = packet[http.HTTPRequest].Host + packet[http.HTTPRequest].Path
+            return self.url
+
+        except Exception as e:
+            print(f'\n[-] ERROR: {e}')
+            sys.exit(0)
 
     def get_login_info(self, packet):
         try:
