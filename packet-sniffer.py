@@ -12,7 +12,12 @@ class Sniff:
         self.url = None
 
     def sniff(self, interface):
-        scapy.sniff(iface=interface, store=False, prn=self.process_sniffed_packet)
+        try:
+            scapy.sniff(iface=interface, store=False, prn=self.process_sniffed_packet)
+
+        except Exception as e:
+            print(f'\n[-] ERROR: {e}')
+            sys.exit(0)
 
     def get_url(self, packet):
         try:
